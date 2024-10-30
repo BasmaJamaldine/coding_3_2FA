@@ -33,11 +33,12 @@ class AuthenticatedSessionController extends Controller
 
         $user = User::where("id", auth()->user()->id)->first();
 
-        $code = random_int(1000, 9999);
-        $user->tfa_code =  $code;
-        $user->save();
-        Mail::to($user->email)->send(new TwoFactorAuthMailer($code));
-
+        if ($user && $user->tfa_enable) {
+            $code = random_int(1000, 9999);
+            $user->tfa_code =  $code;
+            $user->save();
+            Mail::to($user->email)->send(new TwoFactorAuthMailer($code));
+        }
 
         $request->session()->regenerate();
 

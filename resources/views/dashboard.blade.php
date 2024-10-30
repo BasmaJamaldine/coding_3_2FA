@@ -14,4 +14,12 @@
             </div>
         </div>
     </div>
+
+
+
+
+    @checkRole('seller')
+        <h1 class="text-white">Hello Seller</h1>
+    @endCheckRole
+
 </x-app-layout>

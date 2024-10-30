@@ -34,7 +34,8 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'role' => ['required', 'string'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
         ]);
 
         $password = Str::random(10);
@@ -43,6 +44,7 @@ class RegisteredUserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'role' => $request->role,
             'password' => Hash::make($password),
         ]);
 
@@ -51,6 +53,10 @@ class RegisteredUserController extends Controller
         Mail::to($user->email)->send(new PasswordMailer($password));
 
         // Auth::login($user);
+
+        if ($user->hasRole("seller")) {
+            dd("jh");
+        }
 
         return redirect(route('dashboard', absolute: false));
     }

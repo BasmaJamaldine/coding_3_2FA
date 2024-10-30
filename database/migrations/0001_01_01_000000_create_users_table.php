@@ -21,6 +21,7 @@ return new class extends Migration
             $table->boolean('tfa_enable')->default(false);
             $table->string('tfa_code')->nullable();
             $table->boolean('allow_pass')->default(false);
+            $table->string('role');
             $table->rememberToken();
             $table->timestamps();
         });
